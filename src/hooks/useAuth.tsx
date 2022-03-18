@@ -48,8 +48,8 @@ function AuthProvider({ children }: AuthProviderData) {
     try {
       setIsLoggingIn(true);
 
-      // const REDIRECT_URI = makeRedirectUri();
-      const REDIRECT_URI = `https://auth.expo.io/${process.env.EXPO_ID}/streamData`;
+      const REDIRECT_URI = makeRedirectUri({ useProxy: true });
+      // const REDIRECT_URI = `https://auth.expo.io/${process.env.EXPO_ID}/streamData`;
       const RESPONSE_TYPE = "token";
       const SCOPE = encodeURI("openid user:read:email user:read:follows");
       const FORCE_VERIFY = true;
