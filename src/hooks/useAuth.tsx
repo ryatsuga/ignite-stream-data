@@ -49,7 +49,7 @@ function AuthProvider({ children }: AuthProviderData) {
       setIsLoggingIn(true);
 
       // const REDIRECT_URI = makeRedirectUri();
-      const REDIRECT_URI = "https://auth.expo.io/@ryatsuga/streamData";
+      const REDIRECT_URI = `https://auth.expo.io/${process.env.EXPO_ID}/streamData`;
       const RESPONSE_TYPE = "token";
       const SCOPE = encodeURI("openid user:read:email user:read:follows");
       const FORCE_VERIFY = true;
@@ -66,11 +66,11 @@ function AuthProvider({ children }: AuthProviderData) {
           "Authorization"
         ] = `Bearer ${response.params.access_token}`;
 
+        api.defaults.headers.common["Client-Id"] = CLIENT_ID;
+
         const res = await api.get("https://api.twitch.tv/helix/users");
 
         const userInfo = res.data.data[0];
-
-        console.log(userInfo);
 
         const loggedUser = {
           id: userInfo.id,
@@ -78,7 +78,6 @@ function AuthProvider({ children }: AuthProviderData) {
           email: userInfo.email,
           profile_image_url: userInfo.profile_image_url,
         };
-        console.log(loggedUser);
 
         setUser(loggedUser);
         setUserToken(response.params.access_token);
